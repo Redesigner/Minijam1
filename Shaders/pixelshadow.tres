@@ -1,0 +1,31 @@
+[gd_resource type="Shader" format=2]
+
+[resource]
+code = "shader_type canvas_item;
+
+uniform vec2 world_position;
+uniform float light_strength;
+uniform vec2 light_position;
+
+const int light_steps = 4;
+const float zoom = 5.0;
+const vec2 window_size_default = vec2(1024, 600);
+
+
+void fragment(){
+	vec2 screen_size = 1.0 / SCREEN_PIXEL_SIZE;
+	vec2 window_zoom = window_size_default / screen_size;
+	vec2 frag_offset =  (FRAGCOORD.xy);
+
+	vec2 offset = world_position - frag_offset - light_position + vec2(screen_size.x, screen_size.y) / 2.0;
+	offset = round(offset / (zoom / window_zoom)) * zoom / window_zoom;
+	offset *= window_zoom;
+	float light_distance_sq = offset.x * offset.x + offset.y * offset.y;
+	float light_strength_sq = light_strength * light_strength;
+	float lightness = clamp((light_strength_sq - light_distance_sq) / 20000.0, 0.0, 1.0);
+	
+	lightness = round(lightness * float(light_steps)) / float(light_steps);
+	
+	COLOR = texture(TEXTURE, UV) * vec4(vec3(lightness), 1.0);
+
+}"

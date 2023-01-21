@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class TestSprite : Sprite
+public class ShaderInput : TileMap
 {
     public override void _Process(float Delta)
     {
@@ -9,7 +9,10 @@ public class TestSprite : Sprite
         ShaderMaterial shaderMaterial = Material as ShaderMaterial;
         if (!(shaderMaterial is null))
         {
+            Node player = GetParent().FindNode("Player");
+            Node2D player2D = player as Node2D;
             shaderMaterial.SetShaderParam("world_position", GlobalPosition);
+            shaderMaterial.SetShaderParam("light_position", player2D.GlobalPosition);
             // GD.Print(shaderMaterial.GetShaderParam("world_position").ToString());
         }
     }

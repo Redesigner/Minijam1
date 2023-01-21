@@ -7,10 +7,11 @@ public class TileGrid : Node
     [Export]
     private float TileWidth = 0.0f;
     [Export]
-    private float TileHeight = 0.0f; 
+    private float TileHeight = 0.0f;
+
+
     public override void _Ready()
     {
-        
     }
 
     public override Godot.Collections.Array _GetPropertyList()
@@ -34,9 +35,23 @@ public class TileGrid : Node
         return TileHeight;
     }
 
-//  // Called every frame. 'delta' is the elapsed time since the previous frame.
-//  public override void _Process(float delta)
-//  {
-//      
-//  }
+    public bool IsTileOccupied(int x, int y)
+    {
+        Godot.Collections.Array children = GetChildren();
+        for (int i = 0; i < GetChildCount(); i++)
+        {
+            if (children[i] is TileActor)
+            {
+                TileActor actor = children[i] as TileActor;
+                if (actor.IsSolid)
+                {
+                    if (actor.GetTileX() == x && actor.GetTileY() == y)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }
