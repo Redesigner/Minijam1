@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Sprites/player-lowres.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/Player.cs" type="Script" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Sprites/player.png" type="Texture" id=7]
 [ext_resource path="res://Scenes/ShaderInput.cs" type="Script" id=8]
 [ext_resource path="res://Shaders/pixelshadow.tres" type="Shader" id=9]
+[ext_resource path="res://Scenes/ScoreCounter.cs" type="Script" id=10]
 
 [sub_resource type="ShaderMaterial" id=5]
 shader = ExtResource( 9 )
@@ -99,3 +100,4 @@ margin_top = 13.0
 margin_right = 81.0
 margin_bottom = 42.0
 text = "score:"
+script = ExtResource( 10 )

@@ -7,6 +7,11 @@ public class Player : TileActor
 	private int LastX = 0;
 	private int LastY = 0;
 
+	private int Score = 0;
+
+	private const int MoveScore = 10;
+	private const int BlockCost = 50;
+
 	[Export]
 	public PackedScene BlockScene;
 
@@ -24,29 +29,21 @@ public class Player : TileActor
 
     public override void _Input(InputEvent inputEvent)
     {
-        if (inputEvent.IsActionPressed("left"))
+		if (inputEvent.IsActionPressed("left"))
 		{
-			LastX = -1;
-			LastY = 0;
-			TileMove(-1, 0);
+			TryMove(-1, 0);
 		}
 		else if (inputEvent.IsActionPressed("right"))
 		{
-			LastX = 1;
-			LastY = 0;
-			TileMove(1, 0);
+			TryMove(1, 0);
 		}
 		else if (inputEvent.IsActionPressed("up"))
 		{
-			LastX = 0;
-			LastY = -1;
-			TileMove(0, -1);
+			TryMove(0, -1);
 		}
 		else if (inputEvent.IsActionPressed("down"))
 		{
-			LastX = 0;
-			LastY = 1;
-			TileMove(0, 1);
+			TryMove(0, 1);
 		}
 		else if (inputEvent.IsActionPressed("interact"))
 		{
@@ -59,32 +56,38 @@ public class Player : TileActor
         base.StopMoving();
         if (Input.IsActionPressed("left"))
         {
-            LastX = -1;
-            LastY = 0;
-            TileMove(-1, 0);
+			TryMove(-1, 0);
         }
-        else if (Input.IsActionPressed("right"))
+        if (Input.IsActionPressed("right"))
         {
-            LastX = 1;
-            LastY = 0;
-            TileMove(1, 0);
+			TryMove(1, 0);
         }
-        else if (Input.IsActionPressed("up"))
+        if (Input.IsActionPressed("up"))
         {
-            LastX = 0;
-            LastY = -1;
-            TileMove(0, -1);
+			TryMove(0, -1);
         }
-        else if (Input.IsActionPressed("down"))
+        if (Input.IsActionPressed("down"))
         {
-            LastX = 0;
-            LastY = 1;
-            TileMove(0, 1);
+			TryMove(0, 1);
         }
+	}
+
+	private void TryMove(int x, int y)
+	{
+		LastX = x;
+		LastY = y;
+		if (TileMove(x, y))
+		{
+			Score += MoveScore;
+		}
 	}
 
 	private void PlaceBlock(int offsetX, int offsetY)
 	{
+		if (Score < BlockCost)
+		{
+			return;
+		}
 		TileGrid grid = GetParent<TileGrid>();
 		if (grid != null)
 		{
@@ -96,7 +99,13 @@ public class Player : TileActor
                 GetParent().AddChild(block);
                 TileActor tileActor = block as TileActor;
 				tileActor.SetTilePosition(x, y);
+				Score -= BlockCost;
             }
         }
+	}
+
+	public int GetScore()
+	{
+		return Score;
 	}
 }

@@ -74,17 +74,17 @@ public class TileActor : Node2D
         return TileY;
     }
 
-    public void TileMove(int x, int y)
+    public bool TileMove(int x, int y)
     {
         if (Moving)
         {
-            return;
+            return false;
         }
         TileGrid grid = GetParent<TileGrid>();
         if (grid == null)
         {
             GD.Print("TileGrid parent is null...");
-            return;
+            return false;
         }
         GD.Print("Tile move: (" + x + ", " + y + ") from (" + TileX + ", " + TileY + ")");
         if (IsSolid)
@@ -94,8 +94,11 @@ public class TileActor : Node2D
                 TileX += x;
                 TileY += y;
                 UpdatePosition();
+                return true;
             }
+            return false;
         }
+        return true;
     }
 
     private void UpdatePosition()
