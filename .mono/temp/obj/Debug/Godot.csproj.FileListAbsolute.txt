@@ -1,0 +1,9 @@
+F:\Game Development\Godot\MiniJam1\.mono\temp\obj\Debug\Godot.AssemblyInfoInputs.cache
+F:\Game Development\Godot\MiniJam1\.mono\temp\obj\Debug\Godot.AssemblyInfo.cs
+F:\Game Development\Godot\MiniJam1\.mono\temp\obj\Debug\Godot.csproj.CoreCompileInputs.cache
+F:\Game Development\Godot\MiniJam1\.mono\temp\bin\Debug\Godot.dll
+F:\Game Development\Godot\MiniJam1\.mono\temp\bin\Debug\Godot.pdb
+F:\Game Development\Godot\MiniJam1\.mono\temp\obj\Debug\Godot.csproj.AssemblyReference.cache
+F:\Game Development\Godot\MiniJam1\.mono\temp\obj\Debug\Godot.GeneratedMSBuildEditorConfig.editorconfig
+F:\Game Development\Godot\MiniJam1\.mono\temp\obj\Debug\Godot.dll
+F:\Game Development\Godot\MiniJam1\.mono\temp\obj\Debug\Godot.pdb
