@@ -1,21 +1,52 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Sprites/Block.png" type="Texture" id=1]
-[ext_resource path="res://addons/TileMovement/TileActor.cs" type="Script" id=2]
-[ext_resource path="res://Scenes/Sprite_Shadowed.cs" type="Script" id=3]
-[ext_resource path="res://Shaders/pixelshadow.tres" type="Shader" id=4]
+[ext_resource path="res://Scripts/Block.cs" type="Script" id=2]
 
-[sub_resource type="ShaderMaterial" id=1]
-shader = ExtResource( 4 )
-shader_param/world_position = null
-shader_param/light_strength = 250.0
-shader_param/light_position = null
+[sub_resource type="CSharpScript" id=2]
+script/source = "using Godot;
+using System;
+
+public class Sprite_Shadowed : Sprite
+{
+    [Export]
+    private Shader DarknessShader { get; set; }
+    public override void _Process(float Delta)
+    {
+        Material.Set(\"world_position\", GlobalPosition);
+        ShaderMaterial shaderMaterial = Material as ShaderMaterial;
+        if (!(shaderMaterial is null))
+        {
+            Node player = GetParent().GetParent().FindNode(\"Player\");
+            Node2D player2D = player as Node2D;
+            shaderMaterial.SetShaderParam(\"world_position\", GlobalPosition);
+            shaderMaterial.SetShaderParam(\"light_position\", player2D.GlobalPosition);
+            // GD.Print(shaderMaterial.GetShaderParam(\"world_position\").ToString());
+        }
+    }
+
+    public override bool _Set(string property, object value)
+    {
+        if (property == \"DarknessShader\")
+        {
+            Material = new ShaderMaterial();
+            return true;
+        }
+        return base._Set(property, value);
+    }
+}
+"
+
+[sub_resource type="OccluderPolygon2D" id=3]
+polygon = PoolVector2Array( 8, -6, 8, 6, 6, 8, -6, 8, -8, 6, -8, -6, -6, -8, 6, -8 )
 
 [node name="TileActor" type="Node2D"]
 script = ExtResource( 2 )
 MovementTime = 0.0
 
 [node name="Sprite" type="Sprite" parent="."]
-material = SubResource( 1 )
 texture = ExtResource( 1 )
-script = ExtResource( 3 )
+script = SubResource( 2 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource( 3 )

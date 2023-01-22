@@ -1,24 +1,18 @@
 using Godot;
 using System;
 
-[Tool]
 public class TileActor : Node2D
 {
-    [Export]
-    private int TileX = 0;
-    [Export]
-    private int TileY = 0;
-    [Export]
-    public bool IsSolid = true;
+    private Vector2i TilePosition = new Vector2i(0, 0);
+    private const int GridSize = 16;
 
-
-    [Export]
-    public float MovementTime = 0.5f;
+    [Export] public bool IsSolid = true;
+    [Export] public float MovementTime = 0.5f;
+    [Export] public int SizeX = 1;
+    [Export] public int SizeY = 1;
 
     private Vector2 PreviousPosition = Vector2.Zero;
     private Vector2 NewPosition = Vector2.Zero;
-
-    private bool PositionInitialized = false;
 
     private float Alpha = 0.0f;
 
@@ -27,8 +21,9 @@ public class TileActor : Node2D
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        GD.Print("TileActor Spawned");
-        // UpdatePosition();
+        TilePosition = new Vector2i( (int)(Math.Round(Position.x / GridSize)), (int)(Math.Round(Position.y / GridSize)));
+
+        Position = new Vector2(TilePosition.X * GridSize, TilePosition.Y * GridSize);
     }
 
     public override Godot.Collections.Array _GetPropertyList()
@@ -40,17 +35,6 @@ public class TileActor : Node2D
 
     public override void _Process(float delta)
     {
-        // Try to update to the initial position as soon as we can.
-        // The grid isn't available on ready
-        if (!PositionInitialized)
-        {
-            TileGrid tileGrid = GetParent<TileGrid>();
-            if (tileGrid != null)
-            {
-                Position = new Vector2(TileX * tileGrid.GetTileWidth(), TileY * tileGrid.GetTileHeight());
-                PositionInitialized = true;
-            }
-        }
         if (Moving)
         {
             Alpha += delta;
@@ -60,7 +44,7 @@ public class TileActor : Node2D
                 return;
             }
             Position = PreviousPosition + (NewPosition - PreviousPosition) * (Alpha / MovementTime);
-            Position = Position.Round();
+            // Position = Position.Round();
         }
     }
     protected virtual void StopMoving()
@@ -77,20 +61,19 @@ public class TileActor : Node2D
 
     public void SetTilePosition(int x, int y)
     {
-        TileX = x;
-        TileY = y;
+        TilePosition = new Vector2i(x, y);
 
         UpdatePosition();
     }
 
     public int GetTileX()
     {
-        return TileX;
+        return TilePosition.X;
     }
 
     public int GetTileY()
     {
-        return TileY;
+        return TilePosition.Y;
     }
 
     public bool TileMove(int x, int y)
@@ -111,26 +94,29 @@ public class TileActor : Node2D
         }
         if (IsSolid)
         {
-            if (!grid.IsTileOccupied(TileX + x, TileY + y))
+            if (!grid.IsTileOccupied(new Vector2i(TilePosition.X + x, TilePosition.Y + y)))
             {
-                TileX += x;
-                TileY += y;
+                TilePosition.X += x;
+                TilePosition.Y += y;
                 UpdatePosition();
                 return true;
             }
             return false;
         }
-        TileX += x;
-        TileY += y;
+        TilePosition.X += x;
+        TilePosition.Y += y;
         UpdatePosition();
         return true;
     }
 
     private void UpdatePosition()
     {
-        TileGrid grid = GetParent<TileGrid>();
         PreviousPosition = Position;
-        NewPosition = new Vector2(TileX * grid.GetTileWidth(), TileY * grid.GetTileHeight());
+        NewPosition = new Vector2(TilePosition.X * GridSize, TilePosition.Y * GridSize);
         Moving = true;
+    }
+
+    public void Move(Vector2 position)
+    {
     }
 }

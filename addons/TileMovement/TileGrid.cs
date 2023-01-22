@@ -3,7 +3,18 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 
-[Tool]
+public struct Vector2i
+{
+    public int X;
+    public int Y;
+
+    public Vector2i(int x, int y)
+    {
+        X = x;
+        Y = y;
+    }
+}
+
 public class TileGrid : Node 
 {
     public struct TileNode
@@ -104,7 +115,7 @@ public class TileGrid : Node
         return TileHeight;
     }
 
-    public bool IsTileOccupied(int x, int y)
+    public bool IsTileOccupied(Vector2i position, out TileActor occupant)
     {
         Godot.Collections.Array children = GetChildren();
         for (int i = 0; i < GetChildCount(); i++)
@@ -114,14 +125,30 @@ public class TileGrid : Node
                 TileActor actor = children[i] as TileActor;
                 if (actor.IsSolid)
                 {
-                    if (actor.GetTileX() == x && actor.GetTileY() == y)
+                    int l = actor.GetTileX();
+                    int r = l + actor.SizeX;
+                    int u = actor.GetTileY();
+                    int d = u + actor.SizeY;
+
+                    if (position.X >= l
+                        && position.X < r
+                        && position.Y >= u
+                        && position.Y < d)
                     {
+                        occupant = actor;
                         return true;
                     }
                 }
             }
         }
+        occupant = null;
         return false;
+    }
+
+    public bool IsTileOccupied(Vector2i position)
+    {
+        TileActor tileActor = new TileActor();
+        return IsTileOccupied(position, out tileActor);
     }
 
     public List<TileNode> Pathfind(int x0, int y0, int x1, int y1)
@@ -143,7 +170,7 @@ public class TileGrid : Node
 
             foreach (TileNode node in openCopy)
             {
-                if (!IsTileOccupied(node.X, node.Y) || (node.X == x0 && node.Y == y0))
+                if (!IsTileOccupied(new Vector2i(node.X, node.Y)) || (node.X == x0 && node.Y == y0))
                 {
                     // Make an entry for each of the cardinal directions
                     List<TileNode> newNodes = new List<TileNode>()
@@ -188,10 +215,9 @@ public class TileGrid : Node
             result.Add(current);
             if (current.Parent == null || current.Parent.Target == null)
             {
-                GD.Print("Traversal of path completed at node " + iter);
                 if (iter != node.Distance)
                 {
-                    GD.Print("!!Warning!! Traversal list size (" + iter + ") and distance mismatch (" + node.Distance + ") Did something happen to a node in the chain?");
+                    GD.Print("!!Warning!! Traversal list size (" + iter + ") and distance mismatch (" + node.Distance + "). Did something happen to a node in the chain? Check that it was not garbage collected.");
                 }
                 return result;
             }

@@ -38,7 +38,7 @@ public class Enemy : TileActor
         // GD.Print("Enemy reached desired tile");
         if (CurrentPathIndex < PathToPlayer.Count - 1)
         {
-            GD.Print ("Step #" + CurrentPathIndex + " in path completed. Arrived at (" + GetTileX() + ", " + GetTileY() + ")");
+            // GD.Print ("Step #" + CurrentPathIndex + " in path completed. Arrived at (" + GetTileX() + ", " + GetTileY() + ")");
             object nextNode = PathToPlayer[CurrentPathIndex + 1];
             CurrentPathIndex++;
             MoveAlongPath();
@@ -75,7 +75,7 @@ public class Enemy : TileActor
         {
             path += tileNode.ToString() + " => ";
         }
-        GD.Print(path);
+        // GD.Print(path);
 
         if (PathToPlayer.Count > 0)
         {
