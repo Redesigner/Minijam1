@@ -233,4 +233,31 @@ public class TileGrid : Node
         }
         return result;
     }
+
+    public List<TileActor> GetActorsAtLocation(Vector2i position)
+    {
+        List<TileActor> result = new List<TileActor>();
+
+        Godot.Collections.Array children = GetChildren();
+        for (int i = 0; i < GetChildCount(); i++)
+        {
+            if (children[i] is TileActor)
+            {
+                TileActor actor = children[i] as TileActor;
+                int l = actor.GetTileX();
+                int r = l + actor.SizeX;
+                int u = actor.GetTileY();
+                int d = u + actor.SizeY;
+
+                if (position.X >= l
+                    && position.X < r
+                    && position.Y >= u
+                    && position.Y < d)
+                {
+                    result.Add(actor);
+                }
+            }
+        }
+        return result;
+    }
 }

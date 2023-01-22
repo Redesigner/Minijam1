@@ -5,6 +5,7 @@ using System.Linq;
 
 public class Enemy : TileActor
 {
+    [Export] private float DamageRate = 2.0f;
     private List<TileGrid.TileNode> PathToPlayer = new List<TileGrid.TileNode>();
 
     private int CurrentPathIndex;
@@ -30,6 +31,16 @@ public class Enemy : TileActor
     public override void _Process(float delta)
     {
         base._Process(delta);
+
+        TileGrid grid = GetParent() as TileGrid;
+        Player player = grid.FindNode("Player") as Player;
+
+        int deltaX = player.GetTileX() - GetTileX();
+        int deltaY = player.GetTileY() - GetTileY();
+        if (Math.Abs(deltaY) + Math.Abs(deltaX) == 1)
+        {
+            player.SubtractScore(delta * DamageRate);
+        }
     }
 
     protected override void StopMoving()

@@ -4,11 +4,14 @@ using System;
 [Tool]
 public class Hole : TileActor
 {
-    /* public override void _Ready()
+    public override void _Ready()
     {
-        ((Control)FindNode("Visual")).Visible = false;
+        if (!Engine.EditorHint)
+        {
+            ((Control)FindNode("Visual")).Visible = false;
+        }
         base._Ready();
-    } */
+    }
 
     public override void _Process(float delta)
     {

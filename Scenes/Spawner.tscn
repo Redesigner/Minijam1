@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Scripts/Spawner.cs" type="Script" id=1]
+[ext_resource path="res://Sprites/Empty2.png" type="Texture" id=2]
+[ext_resource path="res://Scenes/Log.tscn" type="PackedScene" id=3]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Spawner" type="Node2D" parent="."]
+script = ExtResource( 1 )
+IsSolid = false
+MovementTime = 0.0
+Actor = ExtResource( 3 )
+
+[node name="Visual" type="NinePatchRect" parent="Spawner"]
+margin_left = -8.0
+margin_top = -8.0
+margin_right = 8.0
+margin_bottom = 8.0
+size_flags_horizontal = 2
+size_flags_vertical = 2
+texture = ExtResource( 2 )
+patch_margin_left = 3
+patch_margin_top = 3
+patch_margin_right = 3
+patch_margin_bottom = 3
+
+[node name="Timer" type="Timer" parent="Spawner"]
+wait_time = 5.0
+autostart = true
+
+[connection signal="timeout" from="Spawner/Timer" to="Spawner" method="_on_Timer_timeout"]

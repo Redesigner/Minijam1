@@ -8,5 +8,7 @@ public class Bridge : TileActor
         IsSolid = false;
         ((Sprite)FindNode("Empty")).Visible = false;
         ((Sprite)FindNode("Sprite")).Visible = true;
+        ((Sprite)FindNode("Sprite2")).Visible = false;
+
     }
 }

@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public class Player : TileActor
 {
@@ -33,7 +34,7 @@ public class Player : TileActor
 	public override void _Process(float delta)
 	{
 		base._Process(delta);
-		Score -= delta * ScoreDecayRate;
+		// Score -= delta * ScoreDecayRate;
 		if (Score < 0.0f)
 		{
 			Score = 0.0f;
@@ -85,6 +86,17 @@ public class Player : TileActor
 	protected override void StopMoving()
 	{
         base.StopMoving();
+
+        List<TileActor> actors = GetParent<TileGrid>().GetActorsAtLocation(new Vector2i(GetTileX(), GetTileY()));
+        foreach (TileActor actor in actors)
+        {
+            if (actor is Log)
+            {
+                Score += 100;
+                actor.QueueFree();
+            }
+        }
+
         if (Input.IsActionPressed("left"))
         {
 			TryMove(-1, 0);
@@ -109,7 +121,7 @@ public class Player : TileActor
 		LastY = y;
 		if (TileMove(x, y))
 		{
-			Score += MoveScore;
+			// Score += MoveScore;
 			EmitSignal(nameof(PlayerMoved), GetTileX(), GetTileY());
 		}
 	}
@@ -142,6 +154,7 @@ public class Player : TileActor
 				if (occupant is Block)
 				{
 					GD.Print("Block already exists at this location.");
+					Score += BlockCost;
 					occupant.QueueFree();
 				}
 				else if (occupant is Bridge)
@@ -159,6 +172,15 @@ public class Player : TileActor
 	public int GetScore()
 	{
 		return (int)Math.Floor(Score);
+	}
+
+	public void SubtractScore(float score)
+	{
+		Score -= score;
+		if (Score < 0.0f)
+		{
+			Score = 0.0f;
+		}
 	}
 
 	public float GetLightStrength()

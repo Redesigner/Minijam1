@@ -14,6 +14,6 @@ public class Light : Light2D
     public override void _Ready()
     {
         base._Ready();
-        Visible = true;
+        // Visible = true;
     }
 }

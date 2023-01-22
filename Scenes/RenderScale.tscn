@@ -4,7 +4,7 @@
 
 [node name="ViewportContainer" type="ViewportContainer"]
 margin_right = 1024.0
-margin_bottom = 596.0
+margin_bottom = 576.0
 stretch = true
 
 [node name="Viewport" type="Viewport" parent="."]

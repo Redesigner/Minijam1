@@ -1,15 +1,16 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scripts/Default.cs" type="Script" id=2]
 [ext_resource path="res://Sprites/Tileset1.tres" type="TileSet" id=3]
-[ext_resource path="res://Scenes/Block.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Sprites/UI/HotbarUnselected.png" type="Texture" id=4]
 [ext_resource path="res://addons/TileMovement/TileGrid.cs" type="Script" id=5]
 [ext_resource path="res://Scenes/Enemy.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Scenes/Hole.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Scenes/Bridge.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Scripts/WorldIllumination.cs" type="Script" id=9]
 [ext_resource path="res://Scenes/ScoreCounter.cs" type="Script" id=10]
+[ext_resource path="res://Scenes/Spawner.tscn" type="PackedScene" id=11]
 
 [sub_resource type="ShaderMaterial" id=5]
 
@@ -60,46 +61,40 @@ material = SubResource( 9 )
 z_index = 1
 
 [node name="Enemy" parent="TileGrid" instance=ExtResource( 6 )]
-position = Vector2( 32, 0 )
+position = Vector2( 272, 20 )
 z_index = 1
 
-[node name="Block1" parent="TileGrid" instance=ExtResource( 4 )]
-position = Vector2( -16, -12 )
-
-[node name="Block2" parent="TileGrid" instance=ExtResource( 4 )]
-position = Vector2( -80, 4 )
-
 [node name="Hole" parent="TileGrid" instance=ExtResource( 7 )]
-position = Vector2( -144, -92 )
+position = Vector2( -144, -96 )
 SizeY = 18
 
 [node name="Hole2" parent="TileGrid" instance=ExtResource( 7 )]
-position = Vector2( -128, -92 )
+position = Vector2( -128, -96 )
 SizeX = 20
 SizeY = 1
 
 [node name="Hole3" parent="TileGrid" instance=ExtResource( 7 )]
-position = Vector2( -128, 180 )
+position = Vector2( -128, 176 )
 SizeX = 20
 SizeY = 1
 
 [node name="Hole4" parent="TileGrid" instance=ExtResource( 7 )]
-position = Vector2( 192, -92 )
+position = Vector2( 192, -96 )
 SizeX = 2
 SizeY = 7
 
 [node name="Hole5" parent="TileGrid" instance=ExtResource( 7 )]
-position = Vector2( 192, 36 )
+position = Vector2( 192, 32 )
 SizeX = 2
 SizeY = 10
 
 [node name="Hole6" parent="TileGrid" instance=ExtResource( 7 )]
-position = Vector2( 224, 52 )
+position = Vector2( 224, 48 )
 SizeX = 4
 SizeY = 9
 
 [node name="Hole7" parent="TileGrid" instance=ExtResource( 7 )]
-position = Vector2( 224, -92 )
+position = Vector2( 224, -96 )
 SizeX = 4
 SizeY = 6
 
@@ -117,11 +112,61 @@ margin_bottom = 29.0
 text = "score:"
 script = ExtResource( 10 )
 
+[node name="UI" type="Control" parent="CanvasLayer"]
+margin_right = 160.0
+margin_bottom = 90.0
+
+[node name="Control" type="Control" parent="CanvasLayer/UI"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -24.0
+margin_top = -12.0
+margin_right = 24.0
+
+[node name="Slot1" type="TextureRect" parent="CanvasLayer/UI/Control"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -12.0
+margin_right = -36.0
+texture = ExtResource( 4 )
+
+[node name="Slot2" type="TextureRect" parent="CanvasLayer/UI/Control"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 12.0
+margin_top = -12.0
+margin_right = -24.0
+texture = ExtResource( 4 )
+
+[node name="Slot3" type="TextureRect" parent="CanvasLayer/UI/Control"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 24.0
+margin_top = -12.0
+margin_right = -12.0
+texture = ExtResource( 4 )
+
+[node name="Slot4" type="TextureRect" parent="CanvasLayer/UI/Control"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 36.0
+margin_top = -12.0
+texture = ExtResource( 4 )
+
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 visible = false
 position = Vector2( 64, 36 )
 color = Color( 0.0901961, 0.156863, 0.192157, 1 )
 script = ExtResource( 9 )
+
+[node name="Spawner" parent="." instance=ExtResource( 11 )]
+position = Vector2( -112, -64 )
 
 [connection signal="PlayerMoved" from="TileGrid/Player" to="TileGrid/Enemy" method="_on_Player_PlayerMoved"]
 [connection signal="PlayerPlacedBlock" from="TileGrid/Player" to="TileGrid/Enemy" method="_on_Player_PlayerPlacedBlock"]
