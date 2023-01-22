@@ -13,6 +13,7 @@ public class ShaderInput : TileMap
             Node2D player2D = player as Node2D;
             shaderMaterial.SetShaderParam("world_position", GlobalPosition);
             shaderMaterial.SetShaderParam("light_position", player2D.GlobalPosition);
+            shaderMaterial.SetShaderParam("light_strength", ((Player)player2D).GetLightStrength());
             // GD.Print(shaderMaterial.GetShaderParam("world_position").ToString());
         }
     }

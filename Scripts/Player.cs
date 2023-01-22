@@ -15,6 +15,15 @@ public class Player : TileActor
 	[Export]
 	public PackedScene BlockScene;
 
+	[Export]
+	private float LightStrength = 200.0f;
+
+	[Signal]
+	public delegate void PlayerMoved(int x, int y);
+
+	[Signal]
+	public delegate void PlayerPlacedBlock(int x, int y);
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -79,6 +88,7 @@ public class Player : TileActor
 		if (TileMove(x, y))
 		{
 			Score += MoveScore;
+			EmitSignal(nameof(PlayerMoved), GetTileX(), GetTileY());
 		}
 	}
 
@@ -100,6 +110,8 @@ public class Player : TileActor
                 TileActor tileActor = block as TileActor;
 				tileActor.SetTilePosition(x, y);
 				Score -= BlockCost;
+
+				EmitSignal(nameof(PlayerPlacedBlock), x, y);
             }
         }
 	}
@@ -107,5 +119,10 @@ public class Player : TileActor
 	public int GetScore()
 	{
 		return Score;
+	}
+
+	public float GetLightStrength()
+	{
+		return Score + LightStrength;
 	}
 }

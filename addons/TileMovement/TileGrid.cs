@@ -20,6 +20,14 @@ public class TileGrid : Node
             Parent = null;
         }
 
+        public TileNode(TileNode tileNode)
+        {
+            X = tileNode.X;
+            Y = tileNode.Y;
+            Distance = tileNode.Distance;
+            Parent = new WeakReference(tileNode);
+        }
+
         public TileNode(int x, int y, int distance, TileNode parent)
         {
             X = x;
@@ -56,6 +64,11 @@ public class TileGrid : Node
         public override string ToString()
         {
             String result = "(" + X + ", " + Y + ")";
+            /* if (Parent != null)
+            {
+                TileNode parentNode = (TileNode) Parent.Target;
+                result += " parent at : ( " + parentNode.X + ", " + parentNode.Y + ")";
+            } */
             return result;
         }
     }
@@ -135,10 +148,10 @@ public class TileGrid : Node
                     // Make an entry for each of the cardinal directions
                     List<TileNode> newNodes = new List<TileNode>()
                     {
-                        new TileNode(node.X - 1, node.Y, node.Distance + 1, node),
-                        new TileNode(node.X + 1, node.Y, node.Distance + 1, node),
-                        new TileNode(node.X, node.Y - 1, node.Distance + 1, node),
-                        new TileNode(node.X, node.Y + 1, node.Distance + 1, node)
+                        new TileNode(node.X - 1, node.Y, node.Distance + 1, node), // left
+                        new TileNode(node.X + 1, node.Y, node.Distance + 1, node), // right
+                        new TileNode(node.X, node.Y - 1, node.Distance + 1, node), // up
+                        new TileNode(node.X, node.Y + 1, node.Distance + 1, node)  // down
                     };
                     foreach (TileNode newNode in newNodes)
                     {
@@ -154,8 +167,8 @@ public class TileGrid : Node
                         open.Add(newNode);
                     }
                 }
+                closed.Add(new TileNode(node));
                 open.Remove(node);
-                closed.Add(node);
             }
         }
         GD.Print("Could not find path after " + iter + " iterations.");
@@ -172,16 +185,21 @@ public class TileGrid : Node
         TileNode current = node;
         while (iter < overflow)
         {
-            iter++;
             result.Add(current);
             if (current.Parent == null || current.Parent.Target == null)
             {
+                GD.Print("Traversal of path completed at node " + iter);
+                if (iter != node.Distance)
+                {
+                    GD.Print("!!Warning!! Traversal list size (" + iter + ") and distance mismatch (" + node.Distance + ") Did something happen to a node in the chain?");
+                }
                 return result;
             }
             else
             {
                 current = (TileNode) current.Parent.Target;
             }
+            iter++;
         }
         if (iter >= overflow)
         {

@@ -11,11 +11,14 @@ public class TileActor : Node2D
     [Export]
     public bool IsSolid = true;
 
+
     [Export]
     public float MovementTime = 0.5f;
 
     private Vector2 PreviousPosition = Vector2.Zero;
     private Vector2 NewPosition = Vector2.Zero;
+
+    private bool PositionInitialized = false;
 
     private float Alpha = 0.0f;
 
@@ -25,7 +28,7 @@ public class TileActor : Node2D
     public override void _Ready()
     {
         GD.Print("TileActor Spawned");
-        UpdatePosition();
+        // UpdatePosition();
     }
 
     public override Godot.Collections.Array _GetPropertyList()
@@ -37,6 +40,17 @@ public class TileActor : Node2D
 
     public override void _Process(float delta)
     {
+        // Try to update to the initial position as soon as we can.
+        // The grid isn't available on ready
+        if (!PositionInitialized)
+        {
+            TileGrid tileGrid = GetParent<TileGrid>();
+            if (tileGrid != null)
+            {
+                Position = new Vector2(TileX * tileGrid.GetTileWidth(), TileY * tileGrid.GetTileHeight());
+                PositionInitialized = true;
+            }
+        }
         if (Moving)
         {
             Alpha += delta;
@@ -54,6 +68,11 @@ public class TileActor : Node2D
         Alpha = 0.0f;
         Moving = false;
         Position = NewPosition;
+    }
+
+    public bool IsMoving()
+    {
+        return Moving;
     }
 
     public void SetTilePosition(int x, int y)
@@ -90,7 +109,6 @@ public class TileActor : Node2D
             GD.Print("TileGrid parent is null...");
             return false;
         }
-        GD.Print("Tile move: (" + x + ", " + y + ") from (" + TileX + ", " + TileY + ")");
         if (IsSolid)
         {
             if (!grid.IsTileOccupied(TileX + x, TileY + y))
