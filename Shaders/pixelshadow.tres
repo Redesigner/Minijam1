@@ -17,7 +17,9 @@ void fragment(){
 	vec2 window_zoom = window_size_default / screen_size;
 	vec2 frag_offset =  (FRAGCOORD.xy);
 
-	vec2 offset = world_position - frag_offset - light_position + vec2(screen_size.x, screen_size.y) / 2.0;
+	vec2 offset = world_position - frag_offset
+	- (light_position * SCREEN_PIXEL_SIZE)
+	+ vec2(screen_size.x, screen_size.y) / 2.0;
 	offset = round(offset / (zoom / window_zoom)) * zoom / window_zoom;
 	offset *= window_zoom;
 	float light_distance_sq = offset.x * offset.x + offset.y * offset.y;

@@ -106,6 +106,7 @@ TileX = -2
 [node name="Enemy" type="Node2D" parent="TileGrid"]
 position = Vector2( 96, 0 )
 script = ExtResource( 11 )
+TileX = 6
 MovementTime = 1.0
 
 [node name="Timer" type="Timer" parent="TileGrid/Enemy"]
