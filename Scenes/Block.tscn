@@ -8,7 +8,7 @@
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 4 )
 shader_param/world_position = null
-shader_param/light_strength = 200.0
+shader_param/light_strength = 250.0
 shader_param/light_position = null
 
 [node name="TileActor" type="Node2D"]

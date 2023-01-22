@@ -80,6 +80,10 @@ public class TileActor : Node2D
         {
             return false;
         }
+        if (x == 0 && y == 0)
+        {
+            return true;
+        }
         TileGrid grid = GetParent<TileGrid>();
         if (grid == null)
         {
@@ -98,6 +102,9 @@ public class TileActor : Node2D
             }
             return false;
         }
+        TileX += x;
+        TileY += y;
+        UpdatePosition();
         return true;
     }
 

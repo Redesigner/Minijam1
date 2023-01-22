@@ -22,7 +22,7 @@ void fragment(){
 	offset *= window_zoom;
 	float light_distance_sq = offset.x * offset.x + offset.y * offset.y;
 	float light_strength_sq = light_strength * light_strength;
-	float lightness = clamp((light_strength_sq - light_distance_sq) / 20000.0, 0.0, 1.0);
+	float lightness = clamp((light_strength_sq - light_distance_sq) / 40000.0, 0.0, 1.0);
 	
 	lightness = round(lightness * float(light_steps)) / float(light_steps);
 	
