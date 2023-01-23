@@ -191,6 +191,6 @@ public class Player : TileActor
 			result = 500.0f;
 		}
 		return result; */
-		return 200.0f;
+		return 256.0f;
 	}
 }
