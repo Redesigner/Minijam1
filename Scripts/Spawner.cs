@@ -11,6 +11,8 @@ public class Spawner : TileActor
         if (!Engine.EditorHint)
         {
             ((Control)FindNode("Visual")).Visible = false;
+            Timer timer = (Timer)FindNode("Timer");
+            timer.Connect("timeout", this, "_on_Timer_timeout");
         }
         base._Ready();
     }
@@ -21,7 +23,7 @@ public class Spawner : TileActor
         ((Control)FindNode("Visual")).RectSize = new Vector2(SizeX * 16, SizeY * 16);
     }
 
-    public void _on_Timer_timeout(float delta)
+    public void _on_Timer_timeout()
     {
         int l = GetTileX();
         int r = GetTileX() + SizeX;
@@ -36,6 +38,8 @@ public class Spawner : TileActor
             spawnPosition = new Vector2i(rnd.Next(l, r), rnd.Next(u, d));
         }
         Node actor = Actor.Instance();
-        ((TileActor)actor).SetTilePosition(spawnPosition.X, spawnPosition.Y);
+        GetParent().AddChild(actor);
+        TileActor tileActor = actor as TileActor;
+        tileActor.SetTilePosition(spawnPosition.X, spawnPosition.Y);
     }
 }

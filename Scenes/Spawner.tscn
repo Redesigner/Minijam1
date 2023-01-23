@@ -4,15 +4,13 @@
 [ext_resource path="res://Sprites/Empty2.png" type="Texture" id=2]
 [ext_resource path="res://Scenes/Log.tscn" type="PackedScene" id=3]
 
-[node name="Node2D" type="Node2D"]
-
-[node name="Spawner" type="Node2D" parent="."]
+[node name="Spawner" type="Node2D"]
 script = ExtResource( 1 )
 IsSolid = false
 MovementTime = 0.0
 Actor = ExtResource( 3 )
 
-[node name="Visual" type="NinePatchRect" parent="Spawner"]
+[node name="Visual" type="NinePatchRect" parent="."]
 margin_left = -8.0
 margin_top = -8.0
 margin_right = 8.0
@@ -25,8 +23,6 @@ patch_margin_top = 3
 patch_margin_right = 3
 patch_margin_bottom = 3
 
-[node name="Timer" type="Timer" parent="Spawner"]
+[node name="Timer" type="Timer" parent="."]
 wait_time = 5.0
 autostart = true
-
-[connection signal="timeout" from="Spawner/Timer" to="Spawner" method="_on_Timer_timeout"]

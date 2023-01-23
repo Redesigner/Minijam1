@@ -34,8 +34,8 @@ frame = 1
 playing = true
 
 [node name="Light2D" type="Light2D" parent="."]
-visible = false
 texture = ExtResource( 1 )
+energy = 0.5
 shadow_enabled = true
 shadow_color = Color( 0.117647, 0.168627, 0.262745, 0.00392157 )
 script = ExtResource( 3 )

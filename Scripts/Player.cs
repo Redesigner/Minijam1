@@ -185,11 +185,12 @@ public class Player : TileActor
 
 	public float GetLightStrength()
 	{
-		float result = Score + LightStrength;
+		/* float result = Score + LightStrength;
 		if (result > 500.0f)
 		{
 			result = 500.0f;
 		}
-		return result;
+		return result; */
+		return 200.0f;
 	}
 }

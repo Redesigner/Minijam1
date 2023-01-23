@@ -104,6 +104,11 @@ position = Vector2( 192, 20 )
 [node name="Bridge2" parent="TileGrid" instance=ExtResource( 8 )]
 position = Vector2( 208, 20 )
 
+[node name="Spawner" parent="TileGrid" instance=ExtResource( 11 )]
+position = Vector2( -112, -64 )
+SizeX = 18
+SizeY = 14
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Label" type="Label" parent="CanvasLayer"]
@@ -160,13 +165,9 @@ margin_top = -12.0
 texture = ExtResource( 4 )
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
-visible = false
 position = Vector2( 64, 36 )
-color = Color( 0.0901961, 0.156863, 0.192157, 1 )
+color = Color( 0.647059, 0.752941, 0.807843, 1 )
 script = ExtResource( 9 )
-
-[node name="Spawner" parent="." instance=ExtResource( 11 )]
-position = Vector2( -112, -64 )
 
 [connection signal="PlayerMoved" from="TileGrid/Player" to="TileGrid/Enemy" method="_on_Player_PlayerMoved"]
 [connection signal="PlayerPlacedBlock" from="TileGrid/Player" to="TileGrid/Enemy" method="_on_Player_PlayerPlacedBlock"]
